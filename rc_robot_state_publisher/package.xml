@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>rc_robot_state_publisher</name>
+    <version>0.0.0</version>
+    <description>The rc_robot_state_publisher package</description>
+    <maintainer email="myx@todo.todo">myx</maintainer>
+    <license>BSD</license>
+
+    <!-- buildtool_depend: dependencies of the build process -->
+    <buildtool_depend>catkin</buildtool_depend>
+    <!-- depend: build, export, and execution dependency -->
+    <depend>roscpp</depend>
+
+    <depend>rc_common</depend>
+    <depend>controller_interface</depend>
+    <depend>kdl_parser</depend>
+    <depend>tf2_kdl</depend>
+    <depend>realtime_tools</depend>
+
+    <export>
+        <controller_interface plugin="${prefix}/rc_robot_state_publisher_plugin.xml"/>
+    </export>
+</package>

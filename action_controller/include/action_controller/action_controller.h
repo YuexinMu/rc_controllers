@@ -5,6 +5,7 @@
 #pragma once
 
 #include <controller_interface/multi_interface_controller.h>
+#include <rc_common/hardware_interface/robot_state_interface.h>
 #include <rc_common/hardware_interface/action_interface.h>
 #include <rc_common/tf_rt_broadcaster.h>
 #include <realtime_tools/realtime_publisher.h>
@@ -25,9 +26,8 @@ public:
 
   void update(const ros::Time& time, const ros::Duration& period) override;
 
-  bool setActionCmd(rc_msgs::ActionCmd::Request& req, rc_msgs::ActionCmd::Response& resp);
-
 private:
+  bool setActionCmd(rc_msgs::ActionCmd::Request& req, rc_msgs::ActionCmd::Response& resp);
   std::vector<std::string> action_names_{};
   std::vector<rc_control::ActionHandle> action_handles_{};
 
@@ -35,6 +35,8 @@ private:
   std::vector<RtpublisherPtr> action_data_pubs_{};
 
   geometry_msgs::TransformStamped odom2base_;
+  geometry_msgs::TransformStamped action2base_;
+  rc_control::RobotStateHandle robot_state_handle_{};
   std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Odometry>> odom_pub_{};
   rc_common::TfRtBroadcaster tf_broadcaster_{};
   ros::ServiceServer action_cmd_service_{};

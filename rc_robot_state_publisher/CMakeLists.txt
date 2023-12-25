@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(chassis_controllers)
+project(rc_robot_state_publisher)
 
 ## Use C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ## By adding -Wall and -Werror, the compiler does not ignore warnings anymore,
 ## enforcing cleaner code.
-add_definitions(-Wall -Werror -Wno-enum-compare)
+add_definitions(-Wall -Werror)
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED
@@ -15,13 +15,11 @@ find_package(catkin REQUIRED
         roscpp
 
         rc_common
-
         controller_interface
-        effort_controllers
-        tf2_geometry_msgs
+        tf2_kdl
+        kdl_parser
+        realtime_tools
         )
-
-find_package(Eigen3 REQUIRED)
 
 ###################################
 ## catkin specific configuration ##
@@ -35,15 +33,15 @@ find_package(Eigen3 REQUIRED)
 catkin_package(
         INCLUDE_DIRS
         include
-        ${EIGEN3_INCLUDE_DIR}
         LIBRARIES
+        ${PROJECT_NAME}
         CATKIN_DEPENDS
         roscpp
 
         rc_common
-
-        effort_controllers
-        tf2_geometry_msgs
+        controller_interface
+        kdl_parser
+        realtime_tools
         LIBRARIES ${PROJECT_NAME}
 )
 
@@ -52,22 +50,17 @@ catkin_package(
 ###########
 
 ## Specify additional locations of header files
+## Your package locations should be listed before other locations
 include_directories(
         include
         ${catkin_INCLUDE_DIRS}
-        ${EIGEN3_INCLUDE_DIR}
 )
 
 ## Declare cpp executables
 add_library(${PROJECT_NAME}
-        src/chassis_base.cpp
-        src/omni.cpp
-        src/swerve.cpp
-        #        src/sentry.cpp
-        #        src/reaction_wheel.cpp
+        src/${PROJECT_NAME}.cpp
         )
 
-## Specify libraries to link executable targets against
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
         )
@@ -76,7 +69,7 @@ target_link_libraries(${PROJECT_NAME}
 ## Install ##
 #############
 
-# Mark executables and/or libraries for installation
+## Mark executables and/or libraries for installation
 install(
         TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
@@ -90,14 +83,14 @@ install(
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
         FILES_MATCHING PATTERN "*.h"
 )
-
-# Mark other files for installation
 install(
-        DIRECTORY test
+        FILES rc_robot_state_publisher.xml
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+## Mark other files for installation
 install(
-        FILES chassis_controllers_plugins.xml
+        DIRECTORY test
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
@@ -113,3 +106,4 @@ install(
 #      test/AlgorithmTest.cpp)
 #  target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME}_core)
 #endif ()
+

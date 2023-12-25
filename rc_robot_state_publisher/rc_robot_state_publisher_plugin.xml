@@ -1,0 +1,12 @@
+<library path="lib/librc_robot_state_publisher">
+    <!-- controller_interface types -->
+    <class name="rc_robot_state_publisher/RcRobotStatePublisher"
+           type="rc_robot_state_publisher::RcRobotStatePublisher"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+            This controller publishes the readings of all available tf by read the joint_data
+            The controller expects a JointStateInterface type of hardware interface.
+        </description>
+    </class>
+
+</library>
